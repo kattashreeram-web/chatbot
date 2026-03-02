@@ -257,18 +257,18 @@ async function sendMessage() {
 
         const data = await response.json();
 
-        /* delay reply display by 3 seconds */
+        /* delay reply display by 0.5 seconds */
         setTimeout(function() {
             history.innerHTML += `<div class="bot"><span>${data.reply}</span></div>`;
             loading.style.display = "none";
             history.scrollTop = history.scrollHeight;
-        }, 2000);
+        }, 500);
 
     } catch {
         setTimeout(function() {
             history.innerHTML += `<div class="bot"><span>Network error.</span></div>`;
             loading.style.display = "none";
-        }, 2000);
+        }, 500);
     }
 }
 
@@ -283,7 +283,7 @@ document.getElementById("message").addEventListener("keypress", function(event) 
 window.addEventListener("load", function() {
     setTimeout(function() {
         document.getElementById("loadingScreen").style.display = "none";
-    }, 2000); // 2000 ms = 2 seconds
+    }, 500); // 500 ms = 0.5 seconds
 });
 </script>
 
