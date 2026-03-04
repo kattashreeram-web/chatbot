@@ -36,8 +36,7 @@ def chat():
 
     if not user_input.isdigit():
         return jsonify({
-            "reply": "⚠️ Oops! That doesn't look like a valid number.\n"
-                 "Please enter a user ID between 1 and 10 (example: 1)."
+            "reply": "Hello! I'm not quite able to process that just yet. Would you mind entering a user ID between 1 and 10 instead?"
     })
     user_id = int(user_input)
 
