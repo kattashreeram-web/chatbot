@@ -2,9 +2,6 @@ from flask import Flask, render_template, request, jsonify
 import requests
 
 app = Flask(__name__)
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
 
 API_URL = "https://jsonplaceholder.typicode.com/todos"
 cached_data = None  # simple in-memory cache
@@ -22,6 +19,73 @@ def fetch_data():
         return cached_data
     except requests.RequestException:
         return None
+def chatbot_response(user_message):
+    msg = user_message.lower()
+
+    # Greeting
+    if msg in ["hi", "hello", "hey"]:
+        return "Hello! 👋 Welcome to Nimbus Support. How can I assist you today?"
+
+    # Help
+    elif "help" in msg:
+        return """Sure! I'm here to help 😊
+1️⃣ Account Issues
+2️⃣ Order Status
+3️⃣ Technical Support
+4️⃣ Talk to a Human Agent"""
+
+    # Order status
+    elif "order" in msg:
+        return "📦 Please enter your **Order ID** to check the latest order status."
+
+    # Login issue
+    elif "login" in msg:
+        return """No worries! 🔐
+You can reset your password using the **Forgot Password** option.
+Would you like me to send the reset link?"""
+
+    # OTP issue
+    elif "otp" in msg:
+        return """Sometimes OTPs take a few seconds ⏳
+Please wait **30 seconds** and try again.
+Would you like me to resend the OTP?"""
+
+    # Services info
+    elif "services" in msg:
+        return """We offer several services:
+✅ AI Automation
+✅ Data Analytics
+✅ Chatbot Development
+✅ Dashboard & Reporting
+
+Would you like more details about any of these?"""
+
+    # Demo request
+    elif "demo" in msg:
+        return """Great! 🚀
+Please share your **name, email, and company name**.
+Our team will schedule a **free demo** for you."""
+
+    # Human support
+    elif "human" in msg or "agent" in msg:
+        return "Sure 👍 Connecting you with a support specialist. Please wait…"
+
+    # Thanks
+    elif "thank" in msg:
+        return "You're welcome! 😊 If you need anything else, feel free to ask."
+
+    # Goodbye
+    elif "bye" in msg:
+        return "Thank you for visiting! 👋 Have a wonderful day."
+
+    # Default response
+    else:
+        return """I'm sorry, I didn't understand that. 🤔
+Please choose:
+1️⃣ Account Issues
+2️⃣ Order Status
+3️⃣ Technical Support
+4️⃣ Talk to a Human Agent"""   
 
 
 @app.route("/")
@@ -32,6 +96,19 @@ def home():
 @app.route("/chat", methods=["POST"])
 def chat():
     user_input = request.json.get("message", "").strip()
+
+    # If input is NOT a number → chatbot responses
+    if not user_input.isdigit():
+        bot_reply = chatbot_response(user_input)
+        if bot_reply:
+            return jsonify({"reply": bot_reply})
+
+        return jsonify({
+            "reply": "🙂 Please enter a user ID between 1 and 10."
+        })
+
+    # If input is a number → run API logic
+    user_id = int(user_input)
 
     # Validation
     if not user_input:
