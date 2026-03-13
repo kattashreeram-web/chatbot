@@ -29,10 +29,10 @@ def chatbot_response(user_message):
     # Help
     elif "help" in msg:
         return """Sure! I'm here to help 😊
-1️⃣ Account Issues
-2️⃣ Order Status
-3️⃣ Technical Support
-4️⃣ Talk to a Human Agent"""
+ Account Issues
+ Order Status
+ Technical Support
+ Talk to a Human Agent"""
 
     # Order status
     elif "order" in msg:
