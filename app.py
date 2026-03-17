@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import requests
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -21,73 +22,125 @@ def fetch_data():
         return None
 def chatbot_response(user_message):
     msg = user_message.lower()
+    from datetime import datetime
+
+    # Time-based greeting
+    current_hour = datetime.now().hour
+    if current_hour < 12:
+        greeting = "Good morning ☀️"
+    elif current_hour < 17:
+        greeting = "Good afternoon 🌤️"
+    else:
+        greeting = "Good evening 🌙"
+
+    # -------------------------
+    # 🤖 NEW ZEVOIR FLOW
+    # -------------------------
 
     # Greeting
-    if msg in ["hi", "hello", "hey"]:
-        return "Hello! 👋 Welcome to Nimbus Support. How can I assist you today?"
+    if any(word in msg for word in ["hi", "hello", "hey"]):
+        return f"{greeting}! 👋 Welcome to Zevoir Technologies. What brings you here today?"
 
-    # Help
+    # Business help
+    elif "business" in msg:
+        return "That’s great! 😊 Are you looking for a website, AI solution, or something else?"
+
+    elif "ai" in msg:
+        return "Awesome choice 🚀 AI can really boost efficiency. Are you thinking about automation, chatbots, or data insights?"
+
+    # Services
+    elif "services" in msg:
+        return "We help businesses grow with AI, Data Analytics, Cloud, and Web & Mobile Development. What are you most interested in?"
+
+    elif "web" in msg:
+        return "Nice 👍 Are you planning a new website or upgrading an existing one?"
+
+    elif "new website" in msg:
+        return "Perfect! We can design and build a fast, modern site for you. Would you like a quick consultation?"
+
+    # Chatbot
+    elif "chatbot" in msg:
+        return "Absolutely! 🤖 We create smart chatbots for customer support, automation, and sales."
+
+    elif "work like you" in msg:
+        return "Pretty close 😄 It can answer questions, guide users, and even capture leads."
+
+    elif "sounds good" in msg:
+        return "Great! Want me to connect you with our AI team for a demo?"
+
+    # Data
+    elif "data" in msg:
+        return "That’s where we come in 📊 We turn raw data into clear, actionable insights."
+
+    elif msg == "how":
+        return "We build dashboards, reports, and predictive models so you can make smarter decisions."
+
+    elif "interesting" in msg:
+        return "Want to see a sample dashboard or discuss your use case?"
+
+    # Cloud
+    elif "cloud" in msg:
+        return "Yes ☁️ We help businesses move to cloud platforms like AWS, Azure, and Google Cloud."
+
+    elif "secure" in msg:
+        return "Absolutely 🔐 We focus on security, scalability, and reliability."
+
+    # Lead capture
+    elif "interested" in msg:
+        return "That’s great to hear! 😊 Can I have your name and email so our team can reach out?"
+
+    elif "@" in msg:
+        return "Thanks! 👍 Our team will contact you shortly."
+
+    # Friendly
+    elif "exploring" in msg:
+        return "No problem at all 😊 Take your time. I’m here if you need anything!"
+
+    elif "different" in msg:
+        return "Great question! 🚀 We focus on smart solutions, fast delivery, and real business impact."
+
+    # Closing
+    elif "thanks" in msg or "thank you" in msg:
+        return "You’re welcome! 😊 Let’s build something amazing together!"
+
+    # -------------------------
+    # 🧰 OLD SUPPORT LOGIC (kept)
+    # -------------------------
+
     elif "help" in msg:
         return """Sure! I'm here to help 😊
- Account Issues
- Order Status
- Technical Support
- Talk to a Human Agent"""
+Account Issues
+Order Status
+Technical Support
+Talk to a Human Agent"""
 
-    # Order status
     elif "order" in msg:
-        return "📦 Please enter your **Order ID** to check the latest order status."
+        return "📦 Please enter your Order ID to check the latest order status."
 
-    # Login issue
     elif "login" in msg:
         return """No worries! 🔐
-You can reset your password using the **Forgot Password** option.
+You can reset your password using the Forgot Password option.
 Would you like me to send the reset link?"""
 
-    # OTP issue
     elif "otp" in msg:
         return """Sometimes OTPs take a few seconds ⏳
-Please wait **30 seconds** and try again.
+Please wait 30 seconds and try again.
 Would you like me to resend the OTP?"""
 
-    # Services info
-    elif "services" in msg:
-        return """We offer several services:
-✅ AI Automation
-✅ Data Analytics
-✅ Chatbot Development
-✅ Dashboard & Reporting
-
-Would you like more details about any of these?"""
-
-    # Demo request
     elif "demo" in msg:
         return """Great! 🚀
-Please share your **name, email, and company name**.
-Our team will schedule a **free demo** for you."""
+Please share your name, email, and company name.
+Our team will schedule a free demo for you."""
 
-    # Human support
     elif "human" in msg or "agent" in msg:
         return "Sure 👍 Connecting you with a support specialist. Please wait…"
 
-    # Thanks
-    elif "thank" in msg:
-        return "You're welcome! 😊 If you need anything else, feel free to ask."
-
-    # Goodbye
     elif "bye" in msg:
         return "Thank you for visiting! 👋 Have a wonderful day."
 
-    # Default response
+    # Default
     else:
-        return """I'm sorry, I didn't understand that. 🤔
-Please choose:
-1️⃣ Account Issues
-2️⃣ Order Status
-3️⃣ Technical Support
-4️⃣ Talk to a Human Agent"""   
-
-
+        return "I’m here to help 😊 Could you tell me a bit more about what you need?"
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -152,8 +205,5 @@ def chat():
         return jsonify({"reply": "Unexpected error while processing data."})
 
 
-import os
-
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(debug=True)
