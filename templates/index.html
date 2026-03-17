@@ -3,7 +3,7 @@
 <head>
     <title>Zevoir Query Chatbot</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -42,15 +42,25 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 10px;
         }
-
         #chat {
-            width: 520px;
-            background: rgba(255,255,255,0.75);
-            backdrop-filter: blur(12px);
-            padding: 25px;
+            width: 90%;
+            max-width: 520px;
+            height: 85vh;
+            display: flex;
+            flex-direction: column;
+
+            /* ✨ NEW STYLING */
+            background: linear-gradient(145deg, #ffffff, #f0f4ff);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: 15px;
+
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.15),
+                0 0 20px rgba(30, 136, 229, 0.15);
+
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
 
         h3 {
@@ -60,12 +70,8 @@
         }
 
         #history {
-            height: 320px;
+            flex: 1;
             overflow-y: auto;
-            padding: 15px;
-            border-radius: 15px;
-            background: #f7f9fc;
-            margin-bottom: 15px;
         }
 
         .user {
@@ -258,6 +264,17 @@
                 transform: scale(1);
             }
         }
+        @media (max-width: 600px) {
+        #chat {
+            width: 100%;
+            height: calc(100vh - 80px);
+            border-radius: 0;
+        }
+
+        body {
+            margin: 0;
+        }
+}
 
 
     
@@ -291,9 +308,6 @@
     </div>
 </div>
 
-<footer>
-    © 2026 Number Query Chatbot • Calm UI Demo
-</footer>
 
 <script>
     const historyBox = document.getElementById("history");
@@ -317,23 +331,35 @@ window.onload = function () {
     const savedHistory = localStorage.getItem("chatHistory");
     searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
-    if (savedHistory) {
-        history.innerHTML = savedHistory;
+if (savedHistory) {
+    history.innerHTML = savedHistory;
+} else {
+
+    // Get current time
+    const hour = new Date().getHours();
+    let greeting = "";
+
+    if (hour < 12) {
+        greeting = "Good morning ☀️";
+    } else if (hour < 17) {
+        greeting = "Good afternoon 🌤️";
     } else {
-
-        // Startup message
-        const welcome = `
-        <div class="bot">
-            <span>
-            👋 Hello! I'm your Zevoir Assisstant.
-            Enter a User ID (1-10):
-            </span>
-        </div>
-        `;
-
-        history.innerHTML = welcome;
-        localStorage.setItem("chatHistory", welcome);
+        greeting = "Good evening 🌙";
     }
+
+    // Entry message
+    const welcome = `
+    <div class="bot">
+        <span>
+        ${greeting}! 👋 Welcome to Nimbus Support.
+        How can I help you today?
+        </span>
+    </div>
+    `;
+
+    history.innerHTML = welcome;
+    localStorage.setItem("chatHistory", welcome);
+}
 
 function saveChat() {
     const history = document.getElementById("history").innerHTML;
@@ -432,8 +458,30 @@ document.getElementById("message").addEventListener("keypress", function(event) 
 
 function clearChat() {
     const history = document.getElementById("history");
-    history.innerHTML = "";
-    localStorage.removeItem("chatHistory");
+
+    // Get time-based greeting
+    const hour = new Date().getHours();
+    let greeting = "";
+
+    if (hour < 12) {
+        greeting = "Good morning ☀️";
+    } else if (hour < 17) {
+        greeting = "Good afternoon 🌤️";
+    } else {
+        greeting = "Good evening 🌙";
+    }
+
+    const welcome = `
+    <div class="bot">
+        <span>
+        ${greeting}! 👋 Welcome to Nimbus Support.
+        How can I help you today?
+        </span>
+    </div>
+    `;
+
+    history.innerHTML = welcome;
+    localStorage.setItem("chatHistory", welcome);
 }
 </script>
 
