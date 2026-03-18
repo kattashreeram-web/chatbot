@@ -25,9 +25,7 @@ def chatbot_response(user_message):
     from datetime import datetime
 
     # Time-based greeting
-    import pytz
-    ist = pytz.timezone('Asia/Kolkata')
-    current_hour = datetime.now(ist).hour
+    current_hour = datetime.now().hour
     if current_hour < 12:
         greeting = "Good morning ☀️"
     elif current_hour < 17:
@@ -40,7 +38,7 @@ def chatbot_response(user_message):
     # -------------------------
 
     # Greeting
-    if any(word in msg for word in ["hi", "hello", "hey"]):
+    if any(word in msg for word in ["hi", "hello", "hey","good morning","good afternoon","good evening"]):
         return f"{greeting}! 👋 Welcome to Zevoir Technologies. What brings you here today?"
 
     # Business help
